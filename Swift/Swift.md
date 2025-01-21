@@ -5,14 +5,8 @@ This document contains basic concepts and examples of Swift programming, includi
 ---
 
 ## Table of Contents
-1. [Variable Declarations](#variable-declarations)
-2. [Type Conversion](#type-conversion)
-3. [Arrays and Dictionaries](#arrays-and-dictionaries)
-4. [Control Flow](#control-flow)
-5. [Optionals](#optionals)
-6. [Switch Statements](#switch-statements)
-7. [Loops](#loops)
-8. [Input and Output](#input-and-output)
+1.   [Simple Values](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/guidedtour/#Simple-Values)
+2.   [Control Flow](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/guidedtour/#Control-Flow)
 
 ---
 
@@ -201,6 +195,9 @@ print(a[0] + a[1])
 ```
 
 ---
+
+## Problem
+1.    [acmic:1000](https://www.acmicpc.net/problem/1000)
 
 ## Summary
 This document covered:
