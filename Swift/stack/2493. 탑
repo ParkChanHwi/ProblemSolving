@@ -1,0 +1,22 @@
+let n = Int(readLine()!)!
+var ans = [Int](repeating: 0, count: n)
+var stack = [(Int,Int)]()
+
+var top = readLine()!.split(separator: " ").map{Int($0)!}
+
+for (idx, top) in top.reversed().enumerated() {
+    while true {
+        if stack.isEmpty {
+            break
+        }
+        let peek = stack.last!
+        if peek.1 <= top {
+            let i = stack.removeLast()
+            ans[i.0] = n-idx
+        } else { break }
+    }
+    stack.append((idx, top))
+    
+}
+
+print(ans.reversed().map {String($0)}.joined(separator: " "))
