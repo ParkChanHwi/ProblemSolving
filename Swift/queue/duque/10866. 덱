@@ -1,0 +1,39 @@
+var dequeFront : ArraySlice<Int> = []
+var dequeBack : ArraySlice<Int> = []
+
+let tCase = Int(readLine()!)!
+
+for _ in 0..<tCase {
+    let command = readLine()!.split(separator: " ")
+    
+    switch command[0] {
+    case "push_back": dequeBack.append(Int(command[1])!)
+    case "push_front":dequeFront.append(Int(command[1])!)
+    case "front" : if dequeFront.isEmpty {
+        if dequeBack.isEmpty { print(-1)
+        }else {print(dequeBack.first!)}
+    } else {print(dequeFront.last!)}
+        
+    case "back" : if dequeBack.isEmpty {
+        if dequeFront.isEmpty { print(-1)
+        }else {print(dequeFront.first!)}
+    } else {print(dequeBack.last!)}
+        
+    case "pop_front":  if dequeFront.isEmpty {
+        if dequeBack.isEmpty { print(-1)
+        }else {print(dequeBack.removeFirst())}
+    } else {print(dequeFront.removeLast())}
+        
+    case "pop_back" : if dequeBack.isEmpty {
+        if dequeFront.isEmpty { print(-1)
+        }else {print(dequeFront.removeFirst())}
+    } else {print(dequeBack.removeLast())}
+        
+    case "empty": if(dequeBack.isEmpty && dequeFront.isEmpty) {print(1)}
+        else {print(0)}
+    
+    case "size": print(dequeFront.count + dequeBack.count)
+        
+    default: break
+    } 
+}
