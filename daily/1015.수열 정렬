@@ -1,0 +1,15 @@
+let N = Int(readLine()!)!
+let array = readLine()!.split(separator: " ").map { Int($0)! }
+
+var indexedArray = array.enumerated().map { ($0.offset, $0.element) }
+indexedArray.sort { $0.1 < $1.1 }
+
+var rank = [Int](repeating: 0, count: N)
+
+for (sortedIndex, (originalIndex, _)) in indexedArray.enumerated() {
+    rank[originalIndex] = sortedIndex
+}
+
+for i in rank {
+    print(i, terminator: " ")
+}
