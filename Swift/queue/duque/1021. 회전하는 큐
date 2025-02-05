@@ -1,0 +1,30 @@
+let N = readLine()!.split(separator: " ").map{Int($0)!}
+
+var array = Array(1...N[0])
+
+var command = [0,0,0]
+var target =  readLine()!.split(separator: " ").map{Int($0)!}
+var idx  = 0
+
+while (idx < N[1]) {
+    let targetValue = target[idx]
+    
+    if array.first!  == targetValue {
+        array.removeFirst()
+        idx+=1
+        command[0] += 1
+    } else {
+        let targetIndex = array.firstIndex(of: targetValue)!
+        let leftShift = targetIndex
+        let rightShift = array.count - targetIndex
+        
+        if leftShift <= rightShift {
+            array.append(array.removeFirst())
+            command[1] += 1
+        } else {
+            array.insert(array.removeLast(), at: 0)
+            command[2] += 1
+        }
+    }
+}
+print(command[1] + command[2])
