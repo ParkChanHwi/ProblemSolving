@@ -1,0 +1,30 @@
+let tCase = Int(readLine()!)!
+
+var count = 0
+for _ in 0..<tCase {
+    let goodWord = readLine()!
+    var stack : [Character] = []
+    
+    
+    for i in goodWord {
+        
+        if stack.isEmpty {
+            stack.append(i)
+        }
+        else{
+            if (stack.last! == i) {
+                stack.removeLast()
+            }
+            else {
+                stack.append(i)
+            }
+        }
+        
+    }
+    
+    if stack.isEmpty {
+        count += 1
+    }
+}
+
+print(count)
