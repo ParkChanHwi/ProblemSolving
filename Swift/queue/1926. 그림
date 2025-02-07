@@ -1,0 +1,44 @@
+let nm =  readLine()!.split(separator: " ").map{Int($0)!}
+let n = nm[0]; let m = nm[1]
+let dx = [1,0,-1,0]
+let dy = [0,1,0,-1]
+var board : [[Int]] = []
+var vis = Array(repeating: Array(repeating: false, count: m), count: n)
+for _ in 0..<n {board.append(readLine()!.split(separator: " ").map{Int($0)!})} // board 입력
+ 
+var cnt = 0
+var area = 0
+for i in 0..<n {
+    for j in 0..<m {
+        if vis[i][j] || board[i][j] != 1 {continue}
+        cnt += 1
+        bfs(i,j)
+    }
+}
+
+func bfs (_ x:Int, _ y:Int) {
+    var queue:[(Int,Int)] = []
+    var front = 0
+    vis[x][y] = true
+    queue.append((x,y))
+    
+    
+    while queue.count != front {
+        let (x,y) = queue[front]
+        front += 1
+        
+        for dir in 0..<4 {
+            let nx = x + dx[dir]
+            let ny = y + dy[dir]
+            
+            if nx < 0 || nx >= n || ny < 0 || ny >= m {continue}
+            if vis[nx][ny] || board[nx][ny] != 1 {continue}
+            vis[nx][ny] = true
+            queue.append((nx,ny))
+        }
+    }
+    area = max(area, queue.count)
+}
+
+print(cnt)
+print(area)
