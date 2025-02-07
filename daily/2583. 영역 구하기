@@ -1,0 +1,62 @@
+import Foundation
+
+let nmk = readLine()!.split(separator: " ").map { Int($0)! }
+let M = nmk[0], N = nmk[1], K = nmk[2]
+
+var board = Array(repeating: Array(repeating: 0, count: N), count: M)
+var visited = Array(repeating: Array(repeating: false, count: N), count: M)
+
+let dx = [1, 0, -1, 0]
+let dy = [0, 1, 0, -1]
+
+for _ in 0..<K {
+    let xyxy = readLine()!.split(separator: " ").map { Int($0)! }
+    let x1 = xyxy[0], y1 = xyxy[1], x2 = xyxy[2], y2 = xyxy[3]
+
+    for i in y1..<y2 {
+        for j in x1..<x2 {
+            board[i][j] = 1
+        }
+    }
+}
+
+
+
+var sizes = [Int]()
+
+func bfs(_ startX: Int, _ startY: Int) -> Int {
+    var queue = [(startX, startY)]
+    visited[startX][startY] = true
+    var areaSize = 1
+
+    while !queue.isEmpty {
+        let (x, y) = queue.removeFirst()
+
+        for i in 0..<4 {
+            let nx = x + dx[i]
+            let ny = y + dy[i]
+
+            if nx >= 0 && nx < M && ny >= 0 && ny < N && board[nx][ny] == 0 && !visited[nx][ny] {
+                visited[nx][ny] = true
+                queue.append((nx, ny))
+                areaSize += 1
+            }
+        }
+    }
+
+    return areaSize
+}
+
+
+for i in 0..<M {
+    for j in 0..<N {
+        if board[i][j] == 0 && !visited[i][j] {
+            let size = bfs(i, j)
+            sizes.append(size)
+        }
+    }
+}
+
+
+print(sizes.count)
+print(sizes.sorted().map { String($0) }.joined(separator: " "))
