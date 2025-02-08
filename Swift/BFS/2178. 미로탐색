@@ -1,0 +1,29 @@
+let nm =  readLine()!.split(separator: " ").map{Int($0)!}
+let n = nm[0]; let m = nm[1]
+var board : [[Int]] = []
+var vis = Array(repeating:(Array(repeating: false, count: m)), count: n)
+let dx = [1,0,-1,0]
+let dy = [0,1,0,-1]
+for _ in 0..<n {
+    board.append(readLine()!.map { Int(String($0))! })
+}
+
+var queue : [(Int,Int)] = []
+queue.append((0,0))
+
+
+while(!queue.isEmpty) {
+    let front = queue.removeFirst()
+    for dir in 0..<4{
+        let nx = front.0 + dx[dir]
+        let ny = front.1 + dy[dir]
+        if nx < 0 || nx >= n || ny < 0 || ny >= m {continue}
+        if board[nx][ny] != 1 || vis[nx][ny] {continue}
+        board[nx][ny] = board[front.0][front.1] + 1
+        queue.append((nx,ny))
+        vis[nx][ny] = true
+    }
+}
+
+
+print(board[n-1][m-1])
