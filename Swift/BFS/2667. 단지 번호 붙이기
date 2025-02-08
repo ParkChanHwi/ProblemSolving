@@ -1,0 +1,49 @@
+let n = Int(readLine()!)!
+var board :[[Int]] = []
+var vis = Array(repeating: Array(repeating: false, count: n), count: n)
+let dx = [1,0,-1,0]
+let dy = [0,1,0,-1]
+
+
+for _ in 0..<n {
+    board.append(readLine()!.map{Int(String($0))!})
+}
+
+var queue : [(Int,Int)] = []
+var count = 0
+var Size : [Int] = []
+for i in 0..<n {
+    for j in 0..<n {
+        if board[i][j] == 1 && !vis[i][j]{
+            queue.append((i,j))
+            vis[i][j] = true
+            bfs(i,j)
+        }
+    }
+}
+
+func bfs (_ x:Int, _ y:Int) {
+    count += 1
+    var maxSize = 1
+    while(!queue.isEmpty){
+        let front = queue.removeFirst()
+        
+        for dir in 0..<4 {
+            let nx = front.0 + dx[dir]
+            let ny = front.1 + dy[dir]
+            
+            if nx < 0 || nx >= n || ny < 0 || ny >= n {continue}
+            if board[nx][ny] == 0 || vis[nx][ny] {continue}
+            queue.append((nx,ny))
+            vis[nx][ny] = true
+            maxSize += 1
+        }
+    }
+    Size.append(maxSize)
+}
+
+print(count)
+
+for i in Size.sorted(by: <) {
+    print(i)
+}
