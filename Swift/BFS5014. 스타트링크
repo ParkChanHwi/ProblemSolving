@@ -1,0 +1,32 @@
+var FSGUD = readLine()!.split(separator: " ").map{Int($0)!}
+let F = FSGUD[0]; let S = FSGUD[1]-1; let G = FSGUD[2]-1;
+let U = FSGUD[3]; let D = FSGUD[4]
+
+var dist = Array(repeating: -1, count: F)
+var queue = [S]
+dist[S] = 0
+var flag = false
+
+while !queue.isEmpty {
+    let front  = queue.removeFirst()
+    
+    if front == G {
+        print(dist[front])
+        flag = true
+        break
+    }
+    
+    let up = front + U
+    if up < F && dist[up] == -1 {
+        dist[up] = dist[front] + 1
+        queue.append(up)
+    }
+    
+    let down = front - D
+    if down >= 0 && dist[down] == -1 {
+        dist[down] = dist[front] + 1
+        queue.append(down)
+    }
+    
+}
+if !flag {print("use the stairs")}
