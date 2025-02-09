@@ -1,0 +1,49 @@
+import Foundation
+
+let mn = readLine()!.split(separator: " ").map { Int($0)! }
+let m = mn[0], n = mn[1]
+
+var storage = [[Int]]()
+var queue = [(Int, Int)]()
+var front = 0
+
+for i in 0..<n {
+    let row = readLine()!.split(separator: " ").map { Int($0)! }
+    storage.append(row)
+    
+    for j in 0..<m {
+        if row[j] == 1 {
+            queue.append((i, j))
+        }
+    }
+}
+
+let dx = [1, 0, -1, 0], dy = [0, 1, 0, -1]
+var finalDay = 0
+
+
+while front < queue.count {
+    let (x, y) = queue[front]
+    front += 1
+    
+    for dir in 0..<4 {
+        let nx = x + dx[dir], ny = y + dy[dir]
+        
+        if nx < 0 || nx >= n || ny < 0 || ny >= m { continue }
+        if storage[nx][ny] != 0 { continue }
+        
+        queue.append((nx, ny))
+        storage[nx][ny] = storage[x][y] + 1
+        finalDay = max(finalDay, storage[nx][ny])
+    }
+}
+
+
+for i in 0..<n {
+    if storage[i].contains(0) {
+        print(-1)
+        exit(0)
+    }
+}
+
+print(max(finalDay - 1,0))
