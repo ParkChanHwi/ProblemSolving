@@ -1,0 +1,68 @@
+import Foundation
+
+let rc = readLine()!.split(separator: " ").map { Int($0)! }
+let r = rc[0], c = rc[1]
+
+var grid = [[Character]]()
+var jQueue = [(Int, Int)]()
+var fQueue = [(Int, Int)]()
+var jDist = Array(repeating: Array(repeating: -1, count: c), count: r)
+var fDist = Array(repeating: Array(repeating: -1, count: c), count: r)
+
+for i in 0..<r {
+    let row = Array(readLine()!)
+    grid.append(row)
+
+    for j in 0..<c {
+        if row[j] == "J" {
+            jQueue.append((i, j))
+            jDist[i][j] = 0
+        } else if row[j] == "F" {
+            fQueue.append((i, j))
+            fDist[i][j] = 0
+        }
+    }
+}
+
+let dx = [1, 0, -1, 0], dy = [0, 1, 0, -1]
+
+var front = 0
+while front < fQueue.count {
+    let (x, y) = fQueue[front]
+    front += 1
+
+    for dir in 0..<4 {
+        let nx = x + dx[dir], ny = y + dy[dir]
+        if nx < 0 || nx >= r || ny < 0 || ny >= c { continue }
+        if grid[nx][ny] == "#" || fDist[nx][ny] != -1 { continue }
+
+        fDist[nx][ny] = fDist[x][y] + 1
+        fQueue.append((nx, ny))
+    }
+}
+
+
+var jFront = 0
+while jFront < jQueue.count {
+    let (x, y) = jQueue[jFront]
+    jFront += 1
+
+    
+    if x == 0 || x == r - 1 || y == 0 || y == c - 1 {
+        print(jDist[x][y] + 1)
+        exit(0)
+    }
+
+    for dir in 0..<4 {
+        let nx = x + dx[dir], ny = y + dy[dir]
+        if nx < 0 || nx >= r || ny < 0 || ny >= c { continue }
+        if grid[nx][ny] == "#" || jDist[nx][ny] != -1 { continue }
+
+        if fDist[nx][ny] != -1 && fDist[nx][ny] <= jDist[x][y] + 1 { continue }
+
+        jDist[nx][ny] = jDist[x][y] + 1
+        jQueue.append((nx, ny))
+    }
+}
+
+print("IMPOSSIBLE")
