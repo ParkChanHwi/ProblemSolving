@@ -1,0 +1,28 @@
+var nk = readLine()!.split(separator: " ").map{Int($0)!}
+var n = nk[0]; let k = nk[1]
+var queue = [Int]()
+var vis = Array(repeating: 0, count: 100002)
+
+queue.append(n)
+vis[n] = 1
+
+while !queue.isEmpty {
+    let cur = queue.removeFirst()
+    
+    if cur == k {
+        print(vis[cur]-1)
+    }
+    let nx = cur * 2
+    if nx < 100002 && vis[nx] == 0 {
+        queue.append(nx)
+        vis[nx] = vis[cur] + 1
+    }
+    if cur + 1 < 100002 && vis[cur+1] == 0 {
+        queue.append(cur+1)
+        vis[cur+1] = vis[cur] + 1
+    }
+    if cur - 1 >= 0 && vis[cur-1] == 0 {
+        queue.append(cur-1)
+        vis[cur-1] = vis[cur] + 1
+    }
+}
