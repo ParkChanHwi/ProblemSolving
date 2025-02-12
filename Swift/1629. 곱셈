@@ -1,0 +1,10 @@
+var abc = readLine()!.split(separator: " ").map{CLongLong($0)!}
+print(recursion(abc[0], abc[1], abc[2]))
+
+func recursion(_ a:CLongLong, _ b:CLongLong, _ c:CLongLong) -> CLongLong {
+    if b == 1 {return a % c}
+    var val = recursion(a, b/2, c)
+    val = val * val % c
+    if b%2 == 0 {return val}
+    return val * a % c
+}
