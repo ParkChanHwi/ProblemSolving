@@ -1,0 +1,52 @@
+let tCase = Int(readLine()!)!
+let dx = [1,0,-1,0]; let dy = [0,1,0,-1]
+
+
+for _ in 0..<tCase {
+    var ans = 0
+    let nmk = readLine()!.split(separator: " ").map{Int($0)!}
+    let n = nmk[0]; let m = nmk[1]; let k = nmk[2]
+    var farm = Array(repeating: Array(repeating: 0, count: m), count: n)
+    var vis = Array(repeating: Array(repeating: false, count: m), count: n)
+    
+    
+    for _ in 0..<k {
+        let ij = readLine()!.split(separator: " ").map{Int($0)!}
+        let i = ij[0]; let j = ij[1]
+        farm[i][j] = 1
+    }
+    
+
+    for i in 0..<n {
+        for j in 0..<m {
+            if farm[i][j] != 1 || vis[i][j] {continue}
+            ans += 1
+            bfs(i,j)
+        }
+    }
+    
+    
+    
+    func bfs (_ x:Int, _ y:Int) {
+        var queue = [(Int,Int)]()
+        var front  = 0
+        vis[x][y] = true
+        queue.append((x,y))
+        
+        while queue.count != front {
+            let (x,y) = queue[front]
+            front += 1
+            
+            for dir in 0..<4 {
+                let nx = dx[dir] + x; let ny = dy[dir] + y
+                if nx < 0 || nx >= n || ny < 0 || ny >= m {continue}
+                if vis[nx][ny] || farm[nx][ny] != 1 {continue}
+                vis[nx][ny] = true
+                queue.append((nx,ny))
+            }
+        }
+    }
+    
+    
+    print(ans)
+}
