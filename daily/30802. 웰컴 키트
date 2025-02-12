@@ -1,0 +1,17 @@
+var  n = Int(readLine()!)!
+var size = readLine()!.split(separator: " ").map{Int($0)!}
+var tp = readLine()!.split(separator: " ").map{Int($0)!}
+
+var ans = 0; var cntP = 0; var cntPo = 0
+
+for i in size {
+    if i % tp[0] == 0 {
+        ans += (i / tp[0])
+    }
+    else {
+        ans += (i / tp[0]) + 1
+    }
+}
+print(ans)
+print(n/tp[1], terminator: " ")
+print(n%tp[1])
