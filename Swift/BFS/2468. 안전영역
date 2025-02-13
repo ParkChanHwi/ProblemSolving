@@ -1,0 +1,49 @@
+let n = Int(readLine()!)!
+var grid: [[Int]] = []
+
+for _ in 0..<n {
+    grid.append(readLine()!.split(separator: " ").map { Int($0)! })
+}
+
+let dx = [1, 0, -1, 0], dy = [0, 1, 0, -1]
+var safeArea = 1
+let maxHeight = grid.flatMap { $0 }.max()!
+
+for h in 0..<maxHeight+1 {
+    var count = 0
+    var vis = Array(repeating: Array(repeating: false, count: n), count: n)
+    for x in 0..<n {
+        for y in 0..<n {
+            if grid[x][y] > h && !vis[x][y] {
+                count += 1
+                bfs(x,y,h, &vis)
+            }
+        }
+    }
+    safeArea = max(safeArea, count)
+}
+print(safeArea)
+
+
+// MARK: function
+func bfs(_ x:Int, _ y:Int, _ curHeight:Int, _ vis: inout [[Bool]]){
+    var queue = [(x,y)]
+    var front = 0
+    vis[x][y] = true
+    
+    while front < queue.count {
+        let (x,y) = queue[front]
+        front += 1
+        
+        for dir in 0..<4 {
+            let nx = x + dx[dir]; let ny  = y + dy[dir]
+            if nx < 0 || nx >= n || ny < 0 || ny >= n {continue}
+            if grid[nx][ny] <= curHeight || vis[nx][ny] {continue}
+            vis[nx][ny] = true
+            queue.append((nx,ny))
+            
+        }
+        
+    }
+    
+}
