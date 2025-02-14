@@ -1,0 +1,14 @@
+var nrc = readLine()!.split(separator: " ").map{Int($0)!}
+
+print(recursion(n: nrc[0], r: nrc[1], c: nrc[2]))
+
+func recursion(n: Int, r: Int, c: Int) -> Int {
+    if n==0 {
+        return 0
+    }
+    let half = 1 << (n-1)
+    if (r < half && c < half) {return recursion(n: n-1, r: r, c: c)}
+    if(r < half && c >= half) {return half*half + recursion(n : n-1, r: r, c: c-half)}
+    if (r >= half && c < half) {return 2*half*half + recursion(n: n-1, r: r-half, c: c)}
+    return 3*half*half + recursion(n: n-1, r: r-half, c: c-half)
+}
