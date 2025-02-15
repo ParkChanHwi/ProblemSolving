@@ -1,0 +1,39 @@
+// MARK: Init
+var video = [[Int]]()
+
+// MARK: Input
+let n = Int(readLine()!)!
+for _ in 0..<n {
+    video.append(readLine()!.map { Int(String($0))! })
+}
+
+// MARK: Main
+recursion(n, 0, 0)
+
+// MARK: Func
+func recursion(_ n: Int, _ x: Int, _ y: Int) {
+    if n == 1 {
+        print(video[x][y], terminator: "")
+        return
+    }
+    
+    var zero = false, one = false
+
+    for i in x..<x+n {
+        for j in y..<y+n {
+            if video[i][j] == 0 { zero = true }
+            else { one = true }
+        }
+    }
+
+    if zero && !one { print(0, terminator: ""); return }
+    if one && !zero { print(1, terminator: ""); return }
+
+    
+    print("(", terminator: "")
+    recursion(n/2, x, y)
+    recursion(n/2, x, y + n/2)
+    recursion(n/2, x + n/2, y)
+    recursion(n/2, x + n/2, y + n/2)
+    print(")", terminator: "")
+}
