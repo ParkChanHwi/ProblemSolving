@@ -1,0 +1,2 @@
+var int = readLine()!.split(separator: " ")
+print(max(Int(String(int[0].reversed()))!,Int(String(int[1].reversed()))!))
