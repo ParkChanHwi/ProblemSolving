@@ -1,0 +1,84 @@
+import Foundation
+
+while true {
+    guard let line = readLine(), !line.isEmpty else { break }
+    let lrc = line.split(separator: " ").compactMap { Int($0) }
+    if lrc.count != 3 { continue }
+    
+    let l = lrc[0], r = lrc[1], c = lrc[2]
+    if l + r + c == 0 { break }
+
+    var board = [[[String]]](repeating: [[String]](repeating: [String](repeating: "", count: c), count: r), count: l)
+    var vis = Array(repeating: Array(repeating: Array(repeating: -1, count: c), count: r), count: l)
+    var queue = [(Int, Int, Int)]()
+
+ 
+    for i in 0..<l {
+        for j in 0..<r {
+            guard let input = readLine(), !input.isEmpty else { continue }
+            let row = input.map { String($0) }
+            if row.count == c {
+                board[i][j] = row
+            } else {
+                fatalError("Invalid input row length: expected \(c), got \(row.count)")
+            }
+        }
+        _ = readLine()
+    }
+
+    var hasStart = false
+
+   
+    for z in 0..<l {
+        for x in 0..<r {
+            for y in 0..<c {
+                if board[z][x][y] == "S" {
+                    queue.append((z, x, y))
+                    vis[z][x][y] = 0
+                    hasStart = true
+                }
+            }
+        }
+    }
+
+    if !hasStart {
+        print("No start point found.")
+        continue
+    }
+
+    let dz = [1, -1, 0, 0, 0, 0]
+    let dx = [0, 0, 1, 0, -1, 0]
+    let dy = [0, 0, 0, 1, 0, -1]
+
+    var front = 0
+    var foundExit = false
+
+  
+    while front < queue.count {
+        let (z, x, y) = queue[front]
+        let dist = vis[z][x][y]
+        front += 1
+
+        for dir in 0..<6 {
+            let nz = z + dz[dir], nx = x + dx[dir], ny = y + dy[dir]
+
+            if nz < 0 || nz >= l || nx < 0 || nx >= r || ny < 0 || ny >= c { continue }
+            if board[nz][nx][ny] == "#" || vis[nz][nx][ny] != -1 { continue }
+
+            if board[nz][nx][ny] == "E" {
+                print("Escaped in \(dist + 1) minute(s).")
+                foundExit = true
+                break
+            }
+
+            vis[nz][nx][ny] = dist + 1
+            queue.append((nz, nx, ny))
+        }
+
+        if foundExit { break }
+    }
+
+    if !foundExit {
+        print("Trapped!")
+    }
+}
