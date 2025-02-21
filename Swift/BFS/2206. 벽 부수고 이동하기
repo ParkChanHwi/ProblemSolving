@@ -1,0 +1,53 @@
+let dx = [1, 0, -1, 0]
+let dy = [0, 1, 0, -1]
+
+let nm = readLine()!.split(separator: " ").map { Int($0)! }
+let n = nm[0]
+let m = nm[1]
+
+var board = [[Int]]()
+for _ in 0..<n {
+    board.append(readLine()!.map { Int(String($0))! })
+}
+
+print(bfs())
+
+func bfs() -> Int {
+    var dist = Array(repeating: Array(repeating: Array(repeating: -1, count: m), count: n), count: 2)
+    dist[0][0][0] = 1
+    var queue = [(Int, Int, Int)]()
+    queue.append((0, 0, 0))
+    var front = 0
+
+    while front < queue.count {
+        let (x, y, broken) = queue[front]
+        front += 1
+
+        if x == n - 1 && y == m - 1 {
+            return dist[broken][x][y]
+        }
+
+        let nextDist = dist[broken][x][y] + 1
+
+        for dir in 0..<4 {
+            let nx = x + dx[dir]
+            let ny = y + dy[dir]
+
+            if nx < 0 || nx >= n || ny < 0 || ny >= m {
+                continue
+            }
+
+            if board[nx][ny] == 0 && dist[broken][nx][ny] == -1 {
+                dist[broken][nx][ny] = nextDist
+                queue.append((nx, ny, broken))
+            }
+
+            if broken == 0 && board[nx][ny] == 1 && dist[1][nx][ny] == -1 {
+                dist[1][nx][ny] = nextDist
+                queue.append((nx, ny, 1))
+            }
+        }
+    }
+
+    return -1
+}
