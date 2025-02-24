@@ -1,0 +1,63 @@
+import Foundation
+
+let k = Int(readLine()!)!
+let wh = readLine()!.split(separator: " ").map { Int($0)! }
+let width = wh[0]
+let height = wh[1]
+
+var board = [[Int]]()
+for _ in 0..<height {
+    board.append(readLine()!.split(separator: " ").map { Int($0)! })
+}
+
+let hDx = [-2, -1, -2, 1, -1, 2, 1, 2]
+let hDy = [-1, -2, 1, -2, 2, -1, 2, 1]
+let dx = [1, 0, -1, 0]
+let dy = [0, 1, 0, -1]
+
+var vis = Array(repeating: Array(repeating: Array(repeating: false, count: k + 1), count: width), count: height)
+
+var queue: [(Int, Int, Int)] = [(0, 0, 0)]
+vis[0][0][0] = true
+
+var front = 0
+var steps = 0
+
+while front < queue.count {
+    let size = queue.count - front
+    for _ in 0..<size {
+        let (x, y, horseMoves) = queue[front]
+        front += 1
+
+       
+        if x == height - 1 && y == width - 1 {
+            print(steps)
+            exit(0)
+        }
+
+        
+        if horseMoves < k {
+            for dir in 0..<8 {
+                let nx = x + hDx[dir]
+                let ny = y + hDy[dir]
+                if nx >= 0 && nx < height && ny >= 0 && ny < width && board[nx][ny] == 0 && !vis[nx][ny][horseMoves + 1] {
+                    vis[nx][ny][horseMoves + 1] = true
+                    queue.append((nx, ny, horseMoves + 1))
+                }
+            }
+        }
+
+        
+        for dir in 0..<4 {
+            let nx = x + dx[dir]
+            let ny = y + dy[dir]
+            if nx >= 0 && nx < height && ny >= 0 && ny < width && board[nx][ny] == 0 && !vis[nx][ny][horseMoves] {
+                vis[nx][ny][horseMoves] = true
+                queue.append((nx, ny, horseMoves))
+            }
+        }
+    }
+    steps += 1
+}
+
+print(-1)
