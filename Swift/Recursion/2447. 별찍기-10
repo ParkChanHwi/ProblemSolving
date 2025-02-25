@@ -1,0 +1,30 @@
+import Foundation
+
+func printStar(_ n: Int) {
+    var pattern = Array(repeating: Array(repeating: " ", count: n), count: n)
+    drawStars(&pattern, n, 0, 0)
+    for row in pattern {
+        print(row.joined())
+    }
+}
+
+func drawStars(_ pattern: inout [[String]], _ size: Int, _ x: Int, _ y: Int) {
+    if size == 1 {
+        pattern[x][y] = "*"
+        return
+    }
+    
+    let newSize = size / 3
+    for i in 0..<3 {
+        for j in 0..<3 {
+            if i == 1 && j == 1 {
+                continue
+            }
+            drawStars(&pattern, newSize, x + i * newSize, y + j * newSize)
+        }
+    }
+}
+
+if let input = readLine(), let n = Int(input) {
+    printStar(n)
+}
