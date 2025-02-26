@@ -1,0 +1,40 @@
+import Foundation
+
+let n = Int(readLine()!)!
+let rows = n
+let cols = 2 * n - 1
+let totalCols = cols + 1  // 각 줄마다 개행문자를 위한 추가 공간
+
+// 전체 출력 버퍼 미리 생성 (공백으로 초기화: ASCII 32)
+var buf = [UInt8](repeating: 32, count: rows * totalCols)
+
+// 각 줄 끝에 개행문자 추가 (ASCII 10)
+for r in 0..<rows {
+    buf[r * totalCols + cols] = 10
+}
+
+// 재귀적으로 삼각형 패턴 생성
+func draw(_ n: Int, _ r: Int, _ c: Int) {
+    if n == 3 {
+        // 기본 단위 (n=3)일 때 패턴 - 별표는 ASCII 42
+        buf[(r + 0) * totalCols + (c + 2)] = 42  // 첫 줄 중앙
+        buf[(r + 1) * totalCols + (c + 1)] = 42  // 둘째 줄 왼쪽
+        buf[(r + 1) * totalCols + (c + 3)] = 42  // 둘째 줄 오른쪽
+        for i in 0..<5 {  // 셋째 줄 모두 별표
+            buf[(r + 2) * totalCols + (c + i)] = 42
+        }
+        return
+    }
+    
+    // 삼각형을 세 부분으로 나누어 재귀 호출
+    let half = n / 2
+    draw(half, r, c + half)          // 위쪽 삼각형
+    draw(half, r + half, c)          // 왼쪽 아래 삼각형
+    draw(half, r + half, c + half*2) // 오른쪽 아래 삼각형
+}
+
+// 패턴 생성 시작
+draw(n, 0, 0)
+
+// 한 번에 전체 출력
+FileHandle.standardOutput.write(Data(buf))
