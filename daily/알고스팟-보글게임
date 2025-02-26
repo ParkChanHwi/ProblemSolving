@@ -1,0 +1,55 @@
+import Foundation
+// MARK: Function
+var board: [[String]] = []
+let dx = [-1,-1,-1,1,1,1,0,0]
+let dy = [-1,0,1,-1,0,1,-1,1]
+
+func hasWord(_ y:Int, _ x:Int, _ word:String, _ index:Int) -> Bool {
+    if index == word.count {
+        return true
+    }
+    if y < 0 || y >= 5 || x < 0 || x >= 5 { return false }
+    
+    let wordArray = Array(word)
+    if board[y][x] != String(wordArray[index]) { return false }
+    
+    for i in 0..<8 {
+        let nx = x + dx[i]
+        let ny = y + dy[i]
+        if hasWord(ny, nx, word, index+1) {
+            return true
+        }
+    }
+    return false
+}
+
+
+let tCase = Int(readLine()!)!
+
+for _ in 0..<tCase {
+    board = []
+    for _ in 0..<5 {
+        board.append(readLine()!.map{String($0)})
+    }
+    let wordCount = Int(readLine()!)!
+    var words: [String] = []
+    for _ in 0..<wordCount {
+        words.append(readLine()!)
+    }
+    
+    for word in words {
+        var found = false
+        for y in 0..<5 {
+            for x in 0..<5 {
+                if hasWord(y, x, word, 0){
+                    found = true
+                }
+            }
+        }
+        
+        print("\(word) \(found ? "YES" : "NO")")
+    }
+    
+}
+
+
