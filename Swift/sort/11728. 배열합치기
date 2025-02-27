@@ -1,0 +1,20 @@
+// MARK: Input
+var nm = readLine()!.split(separator: " ").map{Int($0)!}
+let n = nm[0]; let m = nm[1]
+
+var a = readLine()!.split(separator: " ").map{Int($0)!}
+var b = readLine()!.split(separator: " ").map{Int($0)!}
+
+// MARK: Run
+var idxA = 0; var idxB = 0
+var sortedArray = [Int]()
+
+while sortedArray.count < n+m {
+    if idxA == n {sortedArray.append(b[idxB]); idxB += 1; continue}
+    if idxB == m {sortedArray.append(a[idxA]); idxA += 1; continue}
+    if a[idxA] <= b[idxB] {sortedArray.append(a[idxA]); idxA += 1}
+    else {sortedArray.append(b[idxB]); idxB += 1}
+}
+
+print(sortedArray.map { String($0) }.joined(separator: " "))
+// for i in sortedArray {print(i, terminator: " ")} 는 시간초과 발생
