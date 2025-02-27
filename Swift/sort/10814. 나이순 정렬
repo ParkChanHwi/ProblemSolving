@@ -1,0 +1,22 @@
+let n = Int(readLine()!)!
+
+var members: [(age: Int, name: String, order: Int)] = []
+
+for i in 0..<n {
+    let input = readLine()!.split(separator: " ")
+    if let age = Int(input[0]) {
+        let name = String(input[1])
+        members.append((age: age, name: name, order: i))
+    }
+}
+
+members.sort { (a, b) -> Bool in
+    if a.age == b.age {
+        return a.order < b.order
+    }
+    return a.age < b.age
+}
+
+for member in members {
+    print("\(member.age) \(member.name)")
+}
