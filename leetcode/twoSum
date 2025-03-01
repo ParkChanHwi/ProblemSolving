@@ -1,0 +1,13 @@
+func twoSum(_ nums: [Int], _ target: Int) -> [Int] {
+        var dict = [Int: Int]() // dictionary로 선언
+        var result = [Int]() // 정답 저장할 배열
+
+        for (i, num) in nums.enumerated() { // i는 인덱스, num은 값을 넣는다
+            if let val = dict[num] { 
+                result = [i, val]
+            } else {
+                dict[target - num] = i
+            }
+        }
+        return result
+    }
