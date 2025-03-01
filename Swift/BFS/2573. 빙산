@@ -1,0 +1,73 @@
+import Foundation
+
+var vis = Array(repeating:Array(repeating:false, count:m),count:n)
+var board = [[Int]]()
+var year = 0
+
+//MARK: main
+let nm = readLine()!.split(separator: " ").map{Int($0)!} // Input 1
+let n = nm[0]; let m = nm[1]
+let dx = [1,0,-1,0]; let dy = [0,1,0,-1]
+for _ in 0..<n{
+    board.append(readLine()!.split(separator: " ").map{Int($0)!})
+}
+
+while(true) {
+    year += 1
+    melting()
+    vis = Array(repeating:Array(repeating:false, count:m),count:n)
+    let  check = status()
+    if check == 0 {print(0); exit(0)}
+    else if check == 1 {continue}
+    else {break}
+}
+print(year)
+
+// MARK: Func
+func melting() {
+    var zero = Array(repeating:Array(repeating:0,count:m),count:n)
+    for i in 0..<n {
+        for j in 0..<m {
+            if board[i][j] == 0 {continue}
+            for dir in 0..<4 {
+                let nx = i + dx[dir]; let ny = j + dy[dir]
+                if check(nx,ny)&&board[nx][ny]==0 {zero[i][j] += 1}
+            }
+        }
+    }
+    for i in 0..<n {
+        for j in 0..<m {
+            board[i][j] = max(0, board[i][j] - zero[i][j])
+        }
+    }
+}
+
+func status() -> Int {
+    var x = -1; var y = -1
+    var cnt = 0
+    for i in 0..<n {
+        for j in 0..<m {
+            if board[i][j] != 0 {x = i; y = j; cnt += 1}
+        }
+    }
+    if cnt == 0 {return 0}
+    var queue = [(Int,Int)]()
+    queue.append((x,y))
+    vis[x][y] = true
+    var front = 0
+    while front < queue.count {
+        let (curX,curY) = queue[front]; front += 1
+        for dir in 0..<4 {
+            let nx = curX + dx[dir]; let ny = curY + dy[dir]
+            if(!check(nx,ny)||vis[nx][ny]||board[nx][ny]<=0){continue}
+            vis[nx][ny] = true
+            queue.append((nx,ny))
+        }
+    }
+    if front == cnt {return 1}
+    return 2
+}
+
+func check(_ x:Int, _ y:Int)->Bool {
+    return x >= 0 && x < n && y >= 0 && y < m
+}
