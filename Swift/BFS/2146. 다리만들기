@@ -1,0 +1,90 @@
+// MARK : INITIAL
+var n = Int(readLine()!)!
+var board = [[Int]]()
+var vis = Array(repeating: Array(repeating: false, count:n), count: n)
+var islandMap = Array(repeating: Array(repeating: 0, count: n), count: n)
+let dx = [1,0,-1,0]; let dy = [0,1,0,-1]
+var last = [(Int,Int)]()
+var countIsland = 0
+var minBridgeLength = Int.max
+
+for _ in 0..<n {
+   board.append(readLine()!.split(separator:" ").map{Int($0)!})
+}
+
+for i in 0..<n {
+    for j in 0..<n {
+        if board[i][j] == 1 && !vis[i][j] {
+            countIsland += 1
+            markIsland(i, j, countIsland)
+        }
+    }
+}
+
+for i in 1...countIsland {
+    findShortestBridge(i)
+}
+print(minBridgeLength)
+
+func markIsland(_ x:Int, _ y:Int, _ islandNum:Int) {
+    var Q = [(Int, Int)]()
+    Q.append((x,y))
+    vis[x][y] = true
+    islandMap[x][y] = islandNum
+    
+    var front = 0
+    while front < Q.count {
+        let (curX, curY) = Q[front]
+        front += 1
+        
+        for dir in 0..<4 {
+            let nx = curX + dx[dir]; let ny = curY + dy[dir]
+            if nx < 0 || nx >= n || ny < 0 || ny >= n {continue}
+            if board[nx][ny] == 0 || vis[nx][ny] {continue}
+            
+            Q.append((nx,ny))
+            vis[nx][ny] = true
+            islandMap[nx][ny] = islandNum
+        }
+    }
+}
+
+func findShortestBridge (_ islandNum: Int) {
+    var Q = [(Int,Int,Int)]()
+    var visited = Array(repeating: Array(repeating : false, count:n), count : n)
+    
+    for i in 0..<n {
+        for j in 0..<n {
+            if islandMap[i][j] == islandNum {
+                for dir in 0..<4 {
+                    let nx = i + dx[dir]; let ny = j + dy[dir]
+                    
+                    if nx < 0 || nx >= n || ny < 0 || ny >= n {continue}
+                    if board[nx][ny] == 0 {
+                        Q.append((i, j , 0))
+                        visited[i][j] = true
+                        break
+                    }
+                }
+            }
+        }
+    }
+    var front = 0
+    while front < Q.count {
+        let (curX, curY, dist) = Q[front]
+        front += 1
+        for dir in 0..<4 {
+            let nx = curX + dx[dir]; let ny = curY + dy[dir]
+            if nx < 0 || nx >= n || ny < 0 || ny >= n {continue}
+            if visited[nx][ny] {continue}
+            if islandMap[nx][ny] != islandNum && islandMap[nx][ny] != 0 {
+                minBridgeLength = min(minBridgeLength, dist)
+                return
+            }
+            if board[nx][ny] == 0 {
+                Q.append((nx,ny,dist+1))
+                visited[nx][ny] = true
+            }
+        }   
+    }
+}
