@@ -1,0 +1,22 @@
+# My awnser
+```swift
+class Solution {
+    func groupAnagrams(_ strs: [String]) -> [[String]] {
+        var mp:[String:[String]] = [:]
+        for word in strs {
+            let key  = String(word.sorted())
+            mp[key, default: []].append(word)
+        }
+        return Array(mp.values)
+    }
+}
+```
+
+# Other
+```swift
+class Solution {
+    func groupAnagrams(_ strs: [String]) -> [[String]] {
+        return Array(Dictionary(strs.map { (String($0.sorted()), [$0]) }, uniquingKeysWith: +).values)
+    }
+}
+```
