@@ -133,4 +133,34 @@ func solve(_ k:Int) {
 solve(0)
 print(result)
 ```
+# 15655. N과M(6)
+```swift
+let nm = readLine()!.split(separator: " ").map{Int($0)!}
+let (n,m) = (nm[0], nm[1])
 
+var nums = readLine()!.split(separator: " ").map{Int($0)!}
+nums = nums.sorted()
+var vis = Array(repeating: false, count: 10001)
+var arr = Array(repeating: 0, count: m)
+var result = ""
+
+func solve(_ k:Int, _ current:Int) {
+    var cur = current
+    
+    if k == m {
+        result.append(arr.map { String($0) }.joined(separator: " ") + "\n")
+        return
+    }
+    
+    for i in cur..<n {
+        arr[k] = nums[i]
+        cur += 1
+        solve(k+1, cur)
+    }
+            
+}
+
+
+solve(0, 0)
+print(result)
+```
