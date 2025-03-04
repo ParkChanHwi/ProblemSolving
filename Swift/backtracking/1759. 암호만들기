@@ -1,0 +1,43 @@
+let lc = readLine()!.split(separator: " ").map{Int($0)!}
+let (l,c) = (lc[0],lc[1])
+var str = readLine()!.split(separator: " ").map(String.init)
+var ans = Array(repeating: "", count: l)
+var result = ""
+
+
+
+func solve(_ k:Int, _ cur:Int) {
+    if k == l {
+        var flag = false
+        var usedVowelCount = 0; var usedConsonantCount = 0
+        for i in ans.sorted() {
+            if isVowel(i) {usedVowelCount += 1}
+            else {usedConsonantCount += 1}
+        }
+        if usedVowelCount >= 1 && usedConsonantCount >= 2 {flag = true}
+       
+        if flag {
+            result.append(ans.joined(separator:"") + "\n")
+        }
+        return
+    }
+    
+    for i in cur..<c {
+        ans[k] = str[i]
+        solve(k+1, i + 1)
+    }
+    
+}
+
+func isVowel(_ c:String) -> Bool {
+    switch c {
+    case "a", "e", "i", "o", "u":
+        return true
+    default:
+        return false
+    }
+}
+
+str = str.sorted()
+solve(0,0)
+print(result)
