@@ -76,3 +76,32 @@ func solve(_ k: Int) {
 solve(0)
 print(result)
 ```
+# 15652. N과M(4)
+```swift
+let nm = readLine()!.split(separator: " ").map { Int($0)! }
+let (n, m) = (nm[0], nm[1])
+var arr = Array(repeating: 0, count: m)
+var vis = Array(repeating: false, count: n+1)
+var result = ""
+
+func solve(_ k:Int, _ cur:Int) {
+    var cur = cur
+    if k == m {
+        for _ in 0..<m {
+            result.append(arr.map { String($0) }.joined(separator: " ") + "\n")
+            return
+        }
+    }
+    if k != 0 {cur = arr[k-1]}
+    for i in cur...n {
+            arr[k] = i
+            solve(k+1, cur)
+    }
+    
+}
+
+solve(0, 1)
+print(result)
+```
+
+
