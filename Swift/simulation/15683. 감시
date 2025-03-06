@@ -1,0 +1,78 @@
+# 15683. 감시
+
+```swift
+let dx = [1,0,-1,0]; let dy = [0,1,0,-1]
+let nm = readLine()!.split(separator: " ").map{Int($0)!}
+let (n,m) = (nm[0], nm[1])
+
+var board1 = [[Int]]()
+var board2 = [[Int]]()
+var cctv = [(Int,Int)]()
+
+solve()
+
+func OOB (_ x:Int, _ y:Int)-> Bool{
+    return x < 0 || x>=n || y < 0 || y >= n
+}
+
+func update(_ x:Int, _ y:Int, _ dir:Int) {
+    var x = x; var y = y
+    let direction = dir % 4
+    while true {
+        x += dx[direction]
+        y += dy[direction]
+        if OOB(x,y) || board2[x][y] == 6 {return}
+        if board2[x][y] != 0 {continue}
+        board2[x][y] = 7
+    }
+}
+
+func solve() {
+    var minBlindSpot = Int.max
+    for i in 0..<n {
+        board1.append(readLine()!.split(separator: " ").map{Int($0)!})
+        for j in 0..<m {
+            if board1[i][j] != 0 && board1[i][j] != 6 {
+                cctv.append((i,j))
+            }
+        }
+    }
+    let totalCases = 1 << (2*cctv.count)
+    
+    for tmp in 0..<totalCases {
+        var brute = tmp
+        board2 = board1 // board2 초기화
+        for i in 0..<cctv.count {
+            let (x,y) = cctv[i]
+            let dir = brute % 4
+            brute /= 4
+            
+            switch board1[x][y] {
+            case 1:
+                update(x,y,dir)
+            case 2:
+                update(x,y,dir)
+                update(x,y,dir+2)
+            case 3:
+                update(x,y,dir)
+                update(x,y,dir+1)
+            case 4:
+                update(x,y,dir)
+                update(x,y,dir+1)
+                update(x,y,dir+2)
+                
+            case 5:
+                update(x,y,dir)
+                update(x,y,dir+1)
+                update(x,y,dir+2)
+                update(x,y,dir+3)
+            default:
+                break
+            }
+        }
+        let blindSpot = board2.flatMap{ $0 }.filter{$0 == 0}.count
+        minBlindSpot = min(minBlindSpot, blindSpot)
+    }
+    print(minBlindSpot)
+}
+```
