@@ -1,0 +1,11 @@
+import Foundation
+
+while(true){
+    if let rc = readLine()?.split(separator: " ").compactMap({Int($0)}) {
+        let (r,c) = (rc[0],rc[1])
+        print(r + c)
+    }
+    else {
+        exit(0)
+    }
+}
