@@ -1,0 +1,5 @@
+var ans = ""
+while let str = readLine() {
+    ans = ans + "\(str)\n"
+}
+print(ans)
