@@ -1,0 +1,14 @@
+var days = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+var result = ["SUN","MON", "TUE", "WED", "THU", "FRI", "SAT", ]
+var cumulativeDays = Array(repeating: 0, count: 12)
+cumulativeDays[0] = 0
+cumulativeDays[1] = 31
+
+for i in 2...11 {
+    cumulativeDays[i] = cumulativeDays[i-1] + days[i]
+}
+
+var xy = readLine()!.split(separator: " ").map{Int($0)!}
+let (x,y) = (xy[0], xy[1])
+    
+print(result[(cumulativeDays[x-1] + y) % 7])
