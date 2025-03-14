@@ -1,0 +1,22 @@
+let n = Int(readLine()!)!
+var result = ""
+
+var idx = 1
+while true {
+    if idx == n {
+        for _ in 0..<idx {
+            result += "* "
+        }
+        break
+    }
+    
+    for _ in idx..<n {
+        result += " "
+    }
+    for _ in 0..<idx {
+        result += "* "
+    }
+    result += "\n"
+    idx += 1
+}
+print(result)
