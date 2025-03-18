@@ -1,0 +1,31 @@
+import Foundation
+
+let MOD = 1_000_000_000
+
+guard let input = readLine(), let n = Int(input), n > 0 else {
+    print(0)
+    exit(0)
+}
+
+var dp = Array(repeating: Array(repeating: 0, count: 10), count: n + 1)
+
+for i in 1...9 {
+    dp[1][i] = 1
+}
+
+if n > 1 {
+    for length in 2...n {
+        for digit in 0...9 {
+            if digit > 0 {
+                dp[length][digit] += dp[length - 1][digit - 1]
+            }
+            if digit < 9 {
+                dp[length][digit] += dp[length - 1][digit + 1]
+            }
+            dp[length][digit] %= MOD
+        }
+    }
+}
+
+let result = dp[n].reduce(0, +) % MOD
+print(result)
