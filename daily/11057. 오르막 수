@@ -1,0 +1,33 @@
+import Foundation
+
+let n = Int(readLine()!)!
+
+// DP 배열 초기화 - dp[i][j]는 길이가 i이고 마지막 숫자가 j인 오르막 수의 개수
+var dp = Array(repeating: Array(repeating: 0, count: 10), count: n+1)
+
+// 길이가 1인 오르막 수의 개수 초기화 (0부터 9까지 각각 1개씩)
+for j in 0...9 {
+    dp[1][j] = 1
+}
+
+// 길이가 2 이상인 경우 계산
+if n >= 2 {
+    for i in 2...n {
+        for j in 0...9 {
+            // 마지막 숫자가 j인 오르막 수는 이전 자리의 숫자가 0부터 j까지인 경우의 합
+            for k in 0...j {
+                dp[i][j] += dp[i-1][k]
+                dp[i][j] %= 10007
+            }
+        }
+    }
+}
+
+// 길이가 n인 모든 오르막 수의 개수 합산
+var result = 0
+for j in 0...9 {
+    result += dp[n][j]
+    result %= 10007
+}
+
+print(result)
