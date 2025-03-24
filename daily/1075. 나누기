@@ -1,0 +1,12 @@
+import Foundation
+var n = Int(readLine()!)!
+var f = Int(readLine()!)!
+
+var num = (n / 100) * 100
+
+while num % f != 0 {
+    num += 1
+}
+
+let result = String(format: "%02d",num % 100)
+print(result)
