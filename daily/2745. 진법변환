@@ -1,0 +1,21 @@
+let input = readLine()!.split(separator: " ")
+let n = String(input[0])
+let b = Int(input[1])!
+
+func charToInt(_ char: Character) -> Int {
+    if let digit = Int(String(char)) {
+        return digit
+    } else {
+        return Int(char.asciiValue! - Character("A").asciiValue! + 10)
+    }
+}
+
+var result = 0
+var power = 1
+
+for char in n.reversed() {
+    result += charToInt(char) * power
+    power *= b
+}
+
+print(result)
